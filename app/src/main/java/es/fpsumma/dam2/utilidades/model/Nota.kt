@@ -16,6 +16,6 @@ class Nota (
     val trimestre: String,
 
     @ColumnInfo(name = "nota")
-    val nota: String,
+    val nota: Double,
 
 )

@@ -28,4 +28,9 @@ interface NotaDao {
     @Query("SELECT * from notas WHERE id = :id")
     fun getNota(id: Int): Flow<Nota>
 
+    //Muestra las notas ordenadas de mayor a menor
+    @Query("SELECT * from notas")
+    fun getAllNotas():Flow<List<Nota>>
+
 }
+

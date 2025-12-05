@@ -37,6 +37,7 @@ interface TareaDao {
 
     // Devuelve todas las tareas ordenadas por título de la A a la Z.
     // Flow<List<Tarea>> => la lista se actualiza sola cuando se insertan/borran/actualizan tareas.
-    @Query("SELECT * from tareas ORDER BY titulo ASC")
+    @Query("SELECT * from tareas ORDER BY titulo DESC")
     fun getAllTareas(): Flow<List<Tarea>>
+
 }

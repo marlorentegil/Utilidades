@@ -17,6 +17,8 @@ abstract class AppDatabase : RoomDatabase() {
     // (el DAO contiene métodos como insertar, borrar, consultar, etc.)
     abstract fun tareaDao(): TareaDao
 
+    abstract fun NotaDao(): NotaDao
+
     companion object {
         // Guardamos aquí la única instancia de la BD (para no crear 20 bases de datos)
         @Volatile
