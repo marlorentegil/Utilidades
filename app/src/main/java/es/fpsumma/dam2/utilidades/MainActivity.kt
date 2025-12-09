@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import es.fpsumma.dam2.utilidades.ui.navigation.AppNavHost
 import es.fpsumma.dam2.utilidades.ui.theme.UtilidadesTheme
+import es.fpsumma.dam2.utilidades.ui.viewmodel.NotasViewModel
 import es.fpsumma.dam2.utilidades.ui.viewmodel.TareasViewModel
 
 
@@ -27,7 +28,11 @@ class MainActivity : ComponentActivity() {
 fun MyApp() {
     val navController = rememberNavController()
     val tareasViewModel: TareasViewModel =viewModel()
+    val notasViewModel: NotasViewModel = viewModel ()
     UtilidadesTheme {
-        AppNavHost(navController = navController, tareasViewModel)
+        AppNavHost(navController = navController, tareasViewModel, notasViewModel)
     }
+
+
+
 }

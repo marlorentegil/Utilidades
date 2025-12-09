@@ -26,7 +26,7 @@ interface NotaDao {
 
     //Muestra la nota de ese id
     @Query("SELECT * from notas WHERE id = :id")
-    fun getNota(id: Int): Flow<Nota>
+    fun getNota(id: Double): Flow<Nota>
 
     //Muestra las notas ordenadas de mayor a menor
     @Query("SELECT * from notas")

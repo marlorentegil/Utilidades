@@ -75,7 +75,8 @@ fun ListadoTareasScreen(navController: NavController, vm: TareasViewModel, modif
             .fillMaxSize()
             .padding(innerPadding)
             .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
 
             OutlinedTextField(
                 value = titulo,
