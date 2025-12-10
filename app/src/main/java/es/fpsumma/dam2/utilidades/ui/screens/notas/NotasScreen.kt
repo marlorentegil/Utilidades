@@ -1,5 +1,6 @@
 package es.fpsumma.dam2.utilidades.ui.screens.notas
 
+import android.R.attr.priority
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,13 +24,16 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -49,6 +53,28 @@ fun NotasScreen (navController: NavController, vm: NotasViewModel, modifier: Mod
     var asignatura by rememberSaveable { mutableStateOf("") }
     var trimestre by rememberSaveable { mutableStateOf("") }
     var nota by rememberSaveable { mutableStateOf(0.0) } //Hay que poner 0.0 para que no sea un Int
+
+
+
+    //Controlamos el campo asignatura (no puede estar vacío, min 2 caracteres y max 50)
+    val error: String? by remember(asignatura) {
+        derivedStateOf {
+            if (asignatura.trim().isEmpty()) {
+                "El campo no puede estar vacío";
+            }else if (asignatura.trim().length < 2) {
+                "La asignatura no puede tener menos de 2 caracteres";
+            }else if (asignatura.trim().length > 50) {
+                "La asignatura no puede tener mas de 50 caracteres";
+            }
+            else null
+        }
+    }
+
+    fun submit() {
+        if (error == null) {
+            priority
+        }
+    }
 
     fun handleAddNota(){
         vm.addNota(asignatura, trimestre, nota.toDouble())
@@ -70,12 +96,24 @@ fun NotasScreen (navController: NavController, vm: NotasViewModel, modifier: Mod
             modifier = Modifier.fillMaxWidth().padding(padding).padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ){
+
+
+
             OutlinedTextField(
                 value = asignatura,
                 onValueChange = { asignatura = it },
                 label = { Text("Asignatura") },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                isError = error != null,   //Marca el campo como erróneo
+                supportingText = {
+                    if (error != null) {
+                        Text(
+                            text = error!!,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             )
 
             Spacer(Modifier.height(8.dp))
@@ -116,10 +154,13 @@ fun NotasScreen (navController: NavController, vm: NotasViewModel, modifier: Mod
             Spacer(Modifier.height(8.dp))
             Button(
                 onClick = ::handleAddNota,
-                modifier = Modifier.fillMaxWidth()
-            ) { Text("Añadir nota") }
-            HorizontalDivider(modifier.padding(vertical = 16.dp))
+                modifier = Modifier.fillMaxWidth(),
+                enabled = error === null && asignatura.trim().isNotBlank()
+            ) {
+                Text("Añadir nota")
+            }
 
+            HorizontalDivider(modifier.padding(vertical = 16.dp))
 
             LazyColumn(
                 modifier = modifier
@@ -141,7 +182,7 @@ fun NotasScreen (navController: NavController, vm: NotasViewModel, modifier: Mod
                             trailingContent = {
                                 IconButton(
                                     onClick = {handleDeleteNota(nota)},
-                                    modifier = modifier.size(48.dp)
+                                    modifier = modifier.size(48.dp),
                                 ) {
                                     Icon(
                                         imageVector = Icons.Outlined.Delete,
